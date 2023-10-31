@@ -132,7 +132,7 @@ namespace GridBlazor.Pagination
         {
             get
             {
-                if (_currentPage >= 0) return _currentPage;
+                if (_currentPage > 0) return _currentPage;
                 string currentPageString = _query.Get(ParameterName).ToString() ?? "1";
                 if (!int.TryParse(currentPageString, out _currentPage))
                     _currentPage = 1;

@@ -1458,13 +1458,13 @@ namespace GridBlazor
                     allParameters = "&" + allParameters;
                 else
                     allParameters = "?" + allParameters;
-                ODataDTO<T> response = await HttpClient.GetFromJsonAsync<ODataDTO<T>>(Url + allParameters, jsonOptions);
+                /*ODataDTO<T> response = await HttpClient.GetFromJsonAsync<ODataDTO<T>>(Url + allParameters, jsonOptions);
                 if (response == null)
                 {
                     Console.WriteLine("Response is null");
                     return;
                 }
-                 ((GridPager)_pager).ItemsCount = response.ItemsCount;
+                 ((GridPager)_pager).ItemsCount = response.ItemsCount;*/
 
                 // Processor parameters (paging and sorting)
                 string processorParameters = GetODataProcessorParameters();
@@ -1480,7 +1480,7 @@ namespace GridBlazor
                     allParameters = "?" + allParameters;
 
                 //  get processed items
-                response = await HttpClient.GetFromJsonAsync<ODataDTO<T>>(Url + allParameters, jsonOptions);
+                var response = await HttpClient.GetFromJsonAsync<ODataDTO<T>>(Url + allParameters, jsonOptions);
                 if (response == null || response.Value == null)
                 {
                     Console.WriteLine("Response is null");
