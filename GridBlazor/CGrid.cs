@@ -58,7 +58,7 @@ namespace GridBlazor
         private bool _noTotals = false; // controls calls to the back-end for virtualized grids to include totals or not
         private PagingType _pagingType;
         private IGridPager _pager;
-        private HttpClient _httpClient; 
+        private HttpClient _httpClient;
 
         private Func<QueryDictionary<StringValues>, ItemsDTO<T>> _dataService;
         private Func<QueryDictionary<StringValues>, Task<ItemsDTO<T>>> _dataServiceAsync;
@@ -233,7 +233,7 @@ namespace GridBlazor
         public bool GroupingEnabled { get; set; }
 
         public bool ClearFiltersButtonEnabled { get; set; } = false;
-        
+
         public bool RearrangeColumnEnabled { get; set; }
 
         /// <summary>
@@ -297,9 +297,11 @@ namespace GridBlazor
         /// <summary>
         ///     items from server
         /// </summary>
-        public IEnumerable<T> Items {
+        public IEnumerable<T> Items
+        {
             get => _items;
-            set {
+            set
+            {
                 _displayingItemsCount = -1;
                 _items = value;
             }
@@ -354,7 +356,7 @@ namespace GridBlazor
                     _settings.SortSettings.ColumnName = column.Name;
                     _settings.SortSettings.Direction = ((ICGridColumn)column).InitialDirection.Value;
                 }
-            }  
+            }
         }
 
         /// <summary>
@@ -362,24 +364,27 @@ namespace GridBlazor
         /// </summary>
         public string Url { get; set; }
 
-        public HttpClient HttpClient 
+        public HttpClient HttpClient
         {
-            get {
+            get
+            {
                 if (_httpClient == null)
                     _httpClient = new HttpClient();
-                return _httpClient; 
+                return _httpClient;
             }
         }
 
         /// <summary>
         ///     Provides DataService used by the grid
         /// </summary>
-        public Func<QueryDictionary<StringValues>, ItemsDTO<T>> DataService { 
+        public Func<QueryDictionary<StringValues>, ItemsDTO<T>> DataService
+        {
             get { return _dataService; }
             internal set { _dataService = value; }
         }
 
-        public Func<QueryDictionary<StringValues>, Task<ItemsDTO<T>>> DataServiceAsync { 
+        public Func<QueryDictionary<StringValues>, Task<ItemsDTO<T>>> DataServiceAsync
+        {
             get { return _dataServiceAsync; }
             internal set { _dataServiceAsync = value; }
         }
@@ -397,12 +402,13 @@ namespace GridBlazor
         /// <summary>
         ///     Provides CrudDataService used by the grid
         /// </summary>
-        public ICrudDataService<T> CrudDataService 
-        { 
-            get {
+        public ICrudDataService<T> CrudDataService
+        {
+            get
+            {
                 if (ServerAPI == ServerAPI.OData && _crudDataService == null)
                     _crudDataService = new ODataService<T>(HttpClient, Url, this);
-                return _crudDataService; 
+                return _crudDataService;
             }
             set { _crudDataService = value; }
         }
@@ -502,14 +508,12 @@ namespace GridBlazor
         ///     Get value for table height
         /// </summary>
         public string Height { get; set; } = "auto";
-
-        public bool ChangeVirtualizedHeight { get; set; } = false;
-
         public bool ModalForms { get; set; } = false;
 
         public string ModalWidth { get; set; }
 
         public string ModalHeight { get; set; }
+        public bool ChangeVirtualizedHeight { get; set; } = false;
 
         /// <summary>
         ///     Get and set export to an Excel file
@@ -583,7 +587,7 @@ namespace GridBlazor
 
         public IList<Action<object>> CreateActions { get; internal set; }
 
-        public IList<Func<object,Task>> CreateFunctions { get; internal set; }
+        public IList<Func<object, Task>> CreateFunctions { get; internal set; }
 
         public object CreateObject { get; internal set; }
 
@@ -607,8 +611,8 @@ namespace GridBlazor
 
         public QueryDictionary<(string Label, Nullable<MarkupString> Content, Type ComponentType, IList<Action<object>> Actions, IList<Func<object, Task>> Functions, object Object)> ButtonComponents { get; internal set; }
 
-        public QueryDictionary<(string Label, Nullable<MarkupString> Content, Type ComponentType, GridMode GridMode, Func<T,bool> ReadMode, Func<T, bool> UpdateMode, Func<T, bool> DeleteMode, Func<T, Task<bool>> ReadModeAsync, Func<T, Task<bool>> UpdateModeAsync, Func<T, Task<bool>> DeleteModeAsync, IList<Action<object>> Actions, IList<Func<object, Task>> Functions, object Object)> ButtonCrudComponents { get; internal set; }
-        
+        public QueryDictionary<(string Label, Nullable<MarkupString> Content, Type ComponentType, GridMode GridMode, Func<T, bool> ReadMode, Func<T, bool> UpdateMode, Func<T, bool> DeleteMode, Func<T, Task<bool>> ReadModeAsync, Func<T, Task<bool>> UpdateModeAsync, Func<T, Task<bool>> DeleteModeAsync, IList<Action<object>> Actions, IList<Func<object, Task>> Functions, object Object)> ButtonCrudComponents { get; internal set; }
+
         public bool Keyboard { get; internal set; } = false;
 
         public ModifierKey ModifierKey { get; internal set; } = ModifierKey.CtrlKey;
@@ -656,7 +660,7 @@ namespace GridBlazor
         /// <summary>
         ///     Subgrids
         /// </summary>
-        public Func<object[], Task<ICGrid>> SubGrids { get; set;  }
+        public Func<object[], Task<ICGrid>> SubGrids { get; set; }
 
         /// <summary>
         ///     Subgrids state
@@ -724,7 +728,7 @@ namespace GridBlazor
             var targetPossition = _columnsCollection.IndexOf(targetColumn);
             if (currentPossition == -1 || targetPossition == -1 || currentPossition == targetPossition)
                 return InsertColumnFailed;
-            
+
             var index = currentPossition > targetPossition ? targetPossition : targetPossition - 1;
             var removed = _columnsCollection.Remove(insertingColumn);
             if (!removed)
@@ -1053,7 +1057,7 @@ namespace GridBlazor
                 _query[parameterName] = new StringValues(parameterValues.ToArray());
 
                 UpdateQueryAndSettings();
-            }             
+            }
         }
 
         public void AddFilterParameter(IGridColumn column, FilterCollection filters)
@@ -1125,7 +1129,7 @@ namespace GridBlazor
             {
                 StringValues clearInitFilters = new StringValues();
 
-                var columnsToAdd = Columns.Where(r => r.InitialFilterSettings != ColumnFilterValue.Null); 
+                var columnsToAdd = Columns.Where(r => r.InitialFilterSettings != ColumnFilterValue.Null);
                 foreach (var columnToAdd in columnsToAdd)
                 {
                     clearInitFilters = StringValues.Concat(clearInitFilters, columnToAdd.Name);
@@ -1135,7 +1139,7 @@ namespace GridBlazor
                     _query[QueryStringFilterSettings.DefaultClearInitFilterQueryParameter] = clearInitFilters;
                 else
                     _query.Add(QueryStringFilterSettings.DefaultClearInitFilterQueryParameter, clearInitFilters);
-            }       
+            }
         }
 
         public void RemoveFilterParameter(IGridColumn column)
@@ -1183,7 +1187,7 @@ namespace GridBlazor
 
         public IList<object> GetGroupValues(IColumnGroup<T> group, IEnumerable<object> items)
         {
-            if(group == null)
+            if (group == null)
                 return new List<object>();
             return group.GetColumnValues((items as IEnumerable<T>).AsQueryable()).ToList();
         }
@@ -1300,7 +1304,7 @@ namespace GridBlazor
                     string urlParameters = GetLink();
                     if (Url.Contains("?"))
                         urlParameters = urlParameters.Replace("?", "&");
-                    response = await HttpClient.GetFromJsonAsync<ItemsDTO<T>>(Url + urlParameters);       
+                    response = await HttpClient.GetFromJsonAsync<ItemsDTO<T>>(Url + urlParameters);
                 }
                 if (response != null && response.Items != null && response.Pager != null)
                 {
@@ -1355,7 +1359,7 @@ namespace GridBlazor
                                 if (column != null && column.IsCalculationEnabled)
                                     column.CalculationValues = keyValue.Value;
                             }
-                    }          
+                    }
                 }
                 else
                     Console.WriteLine("Response is null");
@@ -1477,7 +1481,7 @@ namespace GridBlazor
 
                 //  get processed items
                 response = await HttpClient.GetFromJsonAsync<ODataDTO<T>>(Url + allParameters, jsonOptions);
-                if (response == null ||  response.Value == null)
+                if (response == null || response.Value == null)
                 {
                     Console.WriteLine("Response is null");
                     return;
@@ -1486,105 +1490,94 @@ namespace GridBlazor
                 Items = response.Value;
                 ((GridPager)_pager).ItemsCount = response.ItemsCount;
 
-                // total back-end queries must not be requested if _query contains a NoTotals parameter with a true value
-                bool noTotals = false;
-                if (_query.ContainsKey(GridPager.DefaultNoTotalsParameter))
+                foreach (IGridColumn<T> column in Columns)
                 {
-                    string noTotalsStr = _query[GridPager.DefaultNoTotalsParameter].FirstOrDefault();
-                    bool.TryParse(noTotalsStr, out noTotals);
-                }
-                
-                if (noTotals == false)
-                {
-                    foreach (IGridColumn<T> column in Columns)
+                    if (column.IsSumEnabled || column.IsAverageEnabled || column.IsMaxEnabled || column.IsMinEnabled)
                     {
-                        if (column.IsSumEnabled || column.IsAverageEnabled || column.IsMaxEnabled || column.IsMinEnabled)
+                        bool isNullable = column.Totals.IsNullable();
+                        Type type = column.Totals.GetPropertyType(isNullable);
+
+                        string filterParameters = GetODataFilterParameters();
+                        if (string.IsNullOrWhiteSpace(filterParameters))
+                            allParameters = "?$apply=";
+                        else
                         {
-                            bool isNullable = column.Totals.IsNullable();
-                            Type type = column.Totals.GetPropertyType(isNullable);
+                            filterParameters = filterParameters.Remove(0, 8);
+                            allParameters = $"?$apply=filter({filterParameters})/";
+                        }
 
-                            string filterParameters = GetODataFilterParameters();
-                            if (string.IsNullOrWhiteSpace(filterParameters))
-                                allParameters = "?$apply=";
-                            else
-                            {
-                                filterParameters = filterParameters.Remove(0, 8);
-                                allParameters = $"?$apply=filter({filterParameters})/";
-                            }
-
-                            var aggregates = new List<string>();
-                            if (column.IsSumEnabled &&
-                                (type == typeof(Single) || type == typeof(Int32) || type == typeof(Int64) || type == typeof(Double) || type == typeof(Decimal)))
-                            {
-                                aggregates.Add(column.Totals.GetFullName() + " with sum as Sum");
-                            }
-                            if (column.IsAverageEnabled &&
-                                (type == typeof(Single) || type == typeof(Int32) || type == typeof(Int64) || type == typeof(Double) || type == typeof(Decimal)))
-                            {
-                                aggregates.Add(column.Totals.GetFullName() + " with average as Average");
-                            }
-                            if (column.IsMaxEnabled)
-                            {
-                                aggregates.Add(column.Totals.GetFullName() + " with max as Max");
-                            }
-                            if (column.IsMinEnabled)
-                            {
-                                aggregates.Add(column.Totals.GetFullName() + " with min as Min");
-                            }
-                            allParameters += $"aggregate({string.Join(",", aggregates)})";
+                        var aggregates = new List<string>();
+                        if (column.IsSumEnabled &&
+                            (type == typeof(Single) || type == typeof(Int32) || type == typeof(Int64) || type == typeof(Double) || type == typeof(Decimal)))
+                        {
+                            aggregates.Add(column.Totals.GetFullName() + " with sum as Sum");
+                        }
+                        if (column.IsAverageEnabled &&
+                            (type == typeof(Single) || type == typeof(Int32) || type == typeof(Int64) || type == typeof(Double) || type == typeof(Decimal)))
+                        {
+                            aggregates.Add(column.Totals.GetFullName() + " with average as Average");
+                        }
+                        if (column.IsMaxEnabled)
+                        {
+                            aggregates.Add(column.Totals.GetFullName() + " with max as Max");
+                        }
+                        if (column.IsMinEnabled)
+                        {
+                            aggregates.Add(column.Totals.GetFullName() + " with min as Min");
+                        }
+                        allParameters += $"aggregate({string.Join(",", aggregates)})";
 
 
-                            if (type == typeof(Single) || type == typeof(Int32) || type == typeof(Int64) || type == typeof(Double) || type == typeof(Decimal))
+                        if (type == typeof(Single) || type == typeof(Int32) || type == typeof(Int64) || type == typeof(Double) || type == typeof(Decimal))
+                        {
+                            var totalResponse = await HttpClient.GetFromJsonAsync<List<NumberTotals>>(Url + allParameters, jsonOptions);
+                            if (totalResponse == null || totalResponse.Count > 0)
                             {
-                                var totalResponse = await HttpClient.GetFromJsonAsync<List<NumberTotals>>(Url + allParameters, jsonOptions);
-                                if (totalResponse == null || totalResponse.Count > 0)
-                                {
-                                    column.SumValue = new Total(totalResponse.First().Sum);
-                                    column.AverageValue = new Total(totalResponse.First().Average);
-                                    column.MaxValue = new Total(totalResponse.First().Max);
-                                    column.MinValue = new Total(totalResponse.First().Min);
-                                }
+                                column.SumValue = new Total(totalResponse.First().Sum);
+                                column.AverageValue = new Total(totalResponse.First().Average);
+                                column.MaxValue = new Total(totalResponse.First().Max);
+                                column.MinValue = new Total(totalResponse.First().Min);
                             }
-                            else if (type == typeof(DateTime))
+                        }
+                        else if (type == typeof(DateTime))
+                        {
+                            var totalResponse = await HttpClient.GetFromJsonAsync<List<DateTimeTotals>>(Url + allParameters, jsonOptions);
+                            if (totalResponse == null || totalResponse.Count > 0)
                             {
-                                var totalResponse = await HttpClient.GetFromJsonAsync<List<DateTimeTotals>>(Url + allParameters, jsonOptions);
-                                if (totalResponse == null || totalResponse.Count > 0)
-                                {
-                                    column.MaxValue = new Total(totalResponse.First().Max);
-                                    column.MinValue = new Total(totalResponse.First().Min);
-                                }
+                                column.MaxValue = new Total(totalResponse.First().Max);
+                                column.MinValue = new Total(totalResponse.First().Min);
                             }
-                            else if (type == typeof(string))
+                        }
+                        else if (type == typeof(string))
+                        {
+                            var totalResponse = await HttpClient.GetFromJsonAsync<List<StringTotals>>(Url + allParameters, jsonOptions);
+                            if (totalResponse == null || totalResponse.Count > 0)
                             {
-                                var totalResponse = await HttpClient.GetFromJsonAsync<List<StringTotals>>(Url + allParameters, jsonOptions);
-                                if (totalResponse == null || totalResponse.Count > 0)
-                                {
-                                    column.MaxValue = new Total(totalResponse.First().Max);
-                                    column.MinValue = new Total(totalResponse.First().Min);
-                                }
+                                column.MaxValue = new Total(totalResponse.First().Max);
+                                column.MinValue = new Total(totalResponse.First().Min);
                             }
                         }
                     }
+                }
 
-                    foreach (IGridColumn<T> gridColumn in Columns.Where(r => ((IGridColumn<T>)r).Calculations.Any()))
+                foreach (IGridColumn<T> gridColumn in Columns.Where(r => ((IGridColumn<T>)r).Calculations.Any()))
+                {
+                    foreach (var calculation in gridColumn.Calculations)
                     {
-                        foreach (var calculation in gridColumn.Calculations)
-                        {
-                            var value = calculation.Value(Columns);
-                            Type type = value.GetType();
+                        var value = calculation.Value(Columns);
+                        Type type = value.GetType();
 
-                            if (type == typeof(Single) || type == typeof(Int32) || type == typeof(Int64) || type == typeof(Double) || type == typeof(Decimal))
-                            {
-                                gridColumn.CalculationValues.AddParameter(calculation.Key, new Total((decimal?)value));
-                            }
-                            else if (type == typeof(DateTime))
-                            {
-                                gridColumn.CalculationValues.AddParameter(calculation.Key, new Total((DateTime)value));
-                            }
-                            else if (type == typeof(string))
-                            {
-                                gridColumn.CalculationValues.AddParameter(calculation.Key, new Total((string)value));
-                            }
+                        if (type == typeof(Single) || type == typeof(Int32) || type == typeof(Int64) || type == typeof(Double) || type == typeof(Decimal))
+                        {
+                            gridColumn.CalculationValues.AddParameter(calculation.Key, new Total((decimal?)value));
+                        }
+                        else if (type == typeof(DateTime))
+                        {
+                            gridColumn.CalculationValues.AddParameter(calculation.Key, new Total((DateTime)value));
+                        }
+                        else if (type == typeof(string))
+                        {
+                            gridColumn.CalculationValues.AddParameter(calculation.Key, new Total((string)value));
                         }
                     }
                 }
