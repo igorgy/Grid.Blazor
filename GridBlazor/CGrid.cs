@@ -1452,9 +1452,9 @@ namespace GridBlazor
                 //  get count of preprocessed items
                 string allParameters;
                 if (string.IsNullOrWhiteSpace(preProcessorParameters))
-                    allParameters = "$count=true&$top=0&$skip=0";
+                    allParameters = "$count=true&$top=0";
                 else
-                    allParameters = preProcessorParameters + "&$count=true&$top=0&$skip=0";
+                    allParameters = preProcessorParameters + "&$count=true&$top=0";
 
                 if (Url.Contains("?"))
                     allParameters = "&" + allParameters;
